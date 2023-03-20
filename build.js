@@ -7,10 +7,10 @@ const dist = join(__dirname, 'dist')
 const src = join(__dirname, 'src')
 
 function copyFiles(files) {
-  files.map((file) => {
+  files.forEach((file) => {
     const distFile = join(dist, file)
     const srcFile = join(src, file)
-    return fs.copy(srcFile, distFile)
+    fs.copy(srcFile, distFile)
   })
 }
 
@@ -18,7 +18,7 @@ function build() {
   fs.removeSync(dist)
   fs.ensureDirSync(dist)
 
-  const copyFileList = ['manifest.json', 'logo.png', 'popup/index.html']
+  const copyFileList = ['manifest.json', 'logo.png', 'options/index.html', 'popup/index.html']
   copyFiles(copyFileList)
 
   exec('pnpm rollup -c', (err, stdout) => {

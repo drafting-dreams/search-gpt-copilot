@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const commonjs = require('@rollup/plugin-commonjs')
+const imageResolver = require('@rollup/plugin-image')
 const nodeResolve = require('@rollup/plugin-node-resolve')
 const replace = require('@rollup/plugin-replace')
 const ts = require('@rollup/plugin-typescript')
@@ -10,6 +11,7 @@ const { NODE_ENV } = process.env
 
 const plugins = [
   commonjs(),
+  imageResolver(),
   nodeResolve(),
   ts(),
   replace({ 'process.env.NODE_ENV': `"${NODE_ENV}"`, preventAssignment: true }),
@@ -19,7 +21,11 @@ if (NODE_ENV === 'production') {
   plugins.push(uglify())
 }
 
-const builds = [{ 'popup/index': 'src/popup/index.tsx' }, { background: 'src/background.ts' }]
+const builds = [
+  { background: 'src/background.ts' },
+  { 'options/index': 'src/options/index.tsx' },
+  { 'popup/index': 'src/popup/index.tsx' },
+]
 
 function buildOption(entry) {
   return {
